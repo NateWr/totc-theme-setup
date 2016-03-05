@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
 
 				if ( r.success && typeof r.data !== 'undefined' ) {
 					target.attr( 'href', r.data )
-						.removeClass( 'totc-theme-setup-install-demo-content' )
+						.removeClass( 'button totc-theme-setup-install-demo-content' )
 						.text( totc_theme_setup.strings['page.demo.view_demo'] );
 
 				} else {
