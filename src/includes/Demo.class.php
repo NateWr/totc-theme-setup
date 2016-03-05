@@ -102,6 +102,15 @@ if ( !class_exists( 'totcThemeSetupDemo' ) ) {
 		}
 
 		/**
+		 * Set an option value with the demo post id
+		 *
+		 * @since 0.1
+		 */
+		public function set_installed_option( $post_id ) {
+			update_option( 'totc_theme_demo_content_' . sanitize_key( $this->slug ), $post_id, false );
+		}
+
+		/**
 		 * Get the value of the installed option key (matches post id for demo
 		 * content)
 		 *
