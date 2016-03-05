@@ -72,7 +72,7 @@ if ( !class_exists( 'totcThemeSetupDemo' ) ) {
 			$plugins = get_plugins();
 			$plugin_installed = !empty( get_plugins( '/' . sanitize_file_name( $this->slug ) ) );
 			$active = is_plugin_active( $this->file );
-			$demo_installed = get_option( 'totc_theme_demo_content_' . sanitize_key( $this->slug ), false );
+			$demo_installed = $this->get_installed_option();
 
 			if ( !$active && empty( $plugin_installed ) ) {
 				$this->status = 'install_plugin';
@@ -100,5 +100,32 @@ if ( !class_exists( 'totcThemeSetupDemo' ) ) {
 		public function current_user_can() {
 			return current_user_can( 'edit_posts' );
 		}
+
+		/**
+		 * Get the value of the installed option key (matches post id for demo
+		 * content)
+		 *
+		 * @since 0.1
+		 */
+		public function get_installed_option() {
+			return get_option( 'totc_theme_demo_content_' . sanitize_key( $this->slug ), false );
+		}
+
+		/**
+		 * Get the permalink for an installed demo
+		 *
+		 * @since 0.1
+		 */
+		public function get_demo_permalink() {
+			$post_id = $this->get_installed_option();
+			return $post_id ? get_permalink( $post_id ) : '';
+		}
+
+		/**
+		 * Install the demo content
+		 *
+		 * @since 0.1
+		 */
+		abstract function install();
 	}
 }

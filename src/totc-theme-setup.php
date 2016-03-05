@@ -13,7 +13,7 @@ if ( !function_exists( 'totc_theme_setup_get_object' ) ) {
 	 * @since 0.1
 	 */
 	function totc_theme_setup_get_object() {
-		include_once( 'totcThemeSetup.class.php' );
+		include_once( 'includes/totcThemeSetup.class.php' );
 		return new totcThemeSetup();
 	}
 
@@ -31,7 +31,7 @@ if ( !function_exists( 'totc_theme_setup_add_page' ) ) {
 	}
 }
 
-if ( !function_exists( 'totc_theme_setup_ajax' ) ) {
+if ( !function_exists( 'totc_theme_setup_handle_ajax_requests' ) ) {
 	/**
 	 * Handle ajax requests
 	 *
@@ -40,5 +40,17 @@ if ( !function_exists( 'totc_theme_setup_ajax' ) ) {
 	function totc_theme_setup_handle_ajax_requests() {
 		$setup_page = totc_theme_setup_get_object();
 		$setup_page->handle_ajax_requests();
+	}
+}
+
+if ( !function_exists( 'totc_theme_setup_handle_nopriv_ajax_requests' ) ) {
+	/**
+	 * Handle ajax requests
+	 *
+	 * @since 0.1
+	 */
+	function totc_theme_setup_handle_nopriv_ajax_requests() {
+		$setup_page = totc_theme_setup_get_object();
+		$setup_page->handle_nopriv_ajax_requests();
 	}
 }

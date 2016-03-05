@@ -20,5 +20,15 @@ if ( !class_exists( 'totcThemeSetupDemoFoodAndDrinkMenu' ) ) {
 		 * @since 0.1
 		 */
 		public $slug = 'food-and-drink-menu';
+
+		/**
+		 * Install the demo content
+		 *
+		 * @since 0.1
+		 */
+		public function install() {
+			error_log( 'installing' );
+			return true;
+		}
 	}
 }

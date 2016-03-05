@@ -34,6 +34,10 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 			'page.documentation.demo' => '',
 			'page.documentation.demo.url' => '',
 			'page.documentation.demo.description' => '',
+			'ajax.installing' => '',
+			'ajax.error.nopriv' => '',
+			'ajax.error.unknown' => '',
+			'ajax.error.unknown_route' => '',
 		);
 
 		/**
@@ -83,8 +87,69 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 		 */
 		public function handle_ajax_requests() {
 
-			error_log( 'totcThemeSetup::handle_ajax_requests' );
-			wp_send_json_success();
+			if ( !check_ajax_referer( 'totc-theme-setup', 'nonce', false ) ) {
+				$this->handle_nopriv_ajax_requests();
+				wp_die();
+			}
+
+			$route = sanitize_key( isset( $_POST['route'] ) ? $_POST['route'] : '' );
+
+			if ( empty( $route ) ) {
+				wp_send_json_error( $this->strings['ajax.error.route_unknown'] );
+			}
+
+			// Demo content
+			if ( $route === 'demos' ) {
+
+				$this->get_demo_handlers();
+
+				foreach( $this->demos as $demo ) {
+
+					if ( $demo->slug === $_POST['slug'] ) {
+
+						if ( !$demo->current_user_can() ) {
+							wp_send_json_error( $this->strings['page.demo.install_demo.no_permission'] );
+						}
+
+						$demo->get_status();
+						if ( $demo->status == 'done' ) {
+							wp_send_json_success( $demo->get_demo_permalink() );
+							wp_die();
+
+						} elseif( $demo->status == 'install_plugin' ) {
+							wp_send_json_error( $this->strings['page.demo.install_plugin'] );
+							wp_die();
+
+						} elseif( $demo->status == 'activate_plugin' ) {
+							wp_send_json_error( $this->strings['page.demo.activate_plugin'] );
+							wp_die();
+						}
+
+						$result = $demo->install();
+
+						if ( $result === true ) {
+							wp_send_json_success( $demo->get_demo_permalink() );
+						} else {
+							wp_send_json_error( $result );
+						}
+
+						wp_die();
+					}
+				}
+
+			// Unrecognized route
+			} else {
+				do_action( 'totc_theme_setup_ajax_route_' . $route );
+			}
+		}
+
+		/**
+		 * Handle ajax requests for logged out users
+		 *
+		 * @since 0.1
+		 */
+		public function handle_nopriv_ajax_requests() {
+			wp_send_json_error( $this->strings['ajax.error.nopriv'] );
 		}
 
 		/**
@@ -105,7 +170,15 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 				return;
 			}
 
-			wp_enqueue_script( 'totc-theme-setup', $this->strings['lib.url_base'] . '/js/theme-setup.js', array( 'jquery' ), '', true );
+			wp_enqueue_script( 'totc-theme-setup', $this->strings['lib.url_base'] . '/assets/js/theme-setup.js', array( 'jquery' ), '', true );
+			wp_localize_script(
+				'totc-theme-setup',
+				'totc_theme_setup',
+				array(
+					'nonce' => wp_create_nonce( 'totc-theme-setup' ),
+					'strings' => $this->strings,
+				)
+			);
 		}
 
 		/**
@@ -115,7 +188,7 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 		 */
 		public function render_page() {
 			$this->get_demo_handlers();
-			include( 'templates/page.php' );
+			include(  dirname( __FILE__  ) . '/../templates/page.php' );
 		}
 
 		/**
