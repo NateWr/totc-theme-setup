@@ -13,6 +13,7 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 		 * @since 0.1
 		 */
 		public $strings = array(
+			'lib.url_base' => '',
 			'page.title' => '',
 			'page.menu.title' => '',
 			'page.no.access' => '',
@@ -60,9 +61,19 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 
 			$strings = $this->strings;
 			$capability = apply_filters( 'totc_theme_setup_page_capability', 'edit_theme_options' );
-			$slug = apply_filters( 'totc_theme_setup_page_slug', 'totc-setup' );
 
-			add_theme_page( $strings['page.title'], $strings['page.menu.title'], $capability, $slug, array( $this, 'render_page' ) );
+			add_theme_page( $strings['page.title'], $strings['page.menu.title'], $capability, $this->get_menu_page_slug(), array( $this, 'render_page' ) );
+
+			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+		}
+
+		/**
+		 * Get page slug
+		 *
+		 * @since 0.1
+		 */
+		public function get_menu_page_slug() {
+			return apply_filters( 'totc_theme_setup_page_slug', 'totc-setup' );
 		}
 
 		/**
@@ -74,6 +85,27 @@ if ( !class_exists( 'totcThemeSetup' ) ) {
 
 			error_log( 'totcThemeSetup::handle_ajax_requests' );
 			wp_send_json_success();
+		}
+
+		/**
+		 * Load assets for the theme setup page
+		 *
+		 * @since 0.1
+		 */
+		public function enqueue_admin_assets() {
+
+			// Use the page reference in $admin_page_hooks because
+			// it changes in SOME hooks when it is translated.
+			// https://core.trac.wordpress.org/ticket/18857
+			global $admin_page_hooks;
+
+			$screen = get_current_screen();
+			$slug = $this->get_menu_page_slug();
+			if ( empty( $screen ) || $screen->base != 'appearance_page_' . $slug ) {
+				return;
+			}
+
+			wp_enqueue_script( 'totc-theme-setup', $this->strings['lib.url_base'] . '/js/theme-setup.js', array( 'jquery' ), '', true );
 		}
 
 		/**

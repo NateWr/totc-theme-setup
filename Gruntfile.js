@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 		jshint: {
 			test: {
 				src: [
-					'src/js/*.js',
+					'src/assets/js/*.js',
 				]
 			}
 		},
@@ -21,8 +21,8 @@ module.exports = function(grunt) {
 		concat: {
 			build: {
 				files: {
-					'dist/js/theme-setup.js': [
-						'src/js/theme-setup.js'
+					'dist/assets/js/theme-setup.js': [
+						'src/assets/js/theme-setup.js'
 					]
 				}
 			}
@@ -53,8 +53,8 @@ module.exports = function(grunt) {
 				cwd: 'src/',
 				src: [
 					'**',
-					'!js/*.js',
-					'!js/components/**',
+					'!assets/js/*.js',
+					'!assets/js/components/**',
 					'!.*', // hidden files
 					'!**/*~' // hidden files
 				],
