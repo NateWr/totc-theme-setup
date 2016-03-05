@@ -43,7 +43,7 @@
 
 							<?php elseif ( $demo->status == 'install_demo' ) : ?>
 								<?php if ( $demo->current_user_can() ) : ?>
-									<a class="button-primary totc-theme-setup-install-demo-content" data-slug="<?php esc_attr( $demo->slug ); ?>" href="#">
+									<a class="button-primary totc-theme-setup-install-demo-content" data-slug="<?php echo esc_attr( $demo->slug ); ?>" href="#">
 										<?php echo esc_html( $this->strings['page.demo.install_demo'] ); ?>
 									</a>
 								<?php else : ?>
