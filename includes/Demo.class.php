@@ -70,7 +70,8 @@ if ( !class_exists( 'totcThemeSetupDemo' ) ) {
 			}
 
 			$plugins = get_plugins();
-			$plugin_installed = !empty( get_plugins( '/' . sanitize_file_name( $this->slug ) ) );
+			$sanitized_slug = sanitize_file_name( $this->slug );
+			$plugin_installed = !empty( get_plugins( '/' . $sanitized_slug ) );
 			$active = is_plugin_active( $this->file );
 			$demo_installed = $this->get_installed_option();
 
