@@ -79,7 +79,7 @@
 					<?php echo esc_html( $this->strings['page.documentation.help'] ); ?>
 				</th>
 				<td>
-					<a href="#"><!-- @TODO add link to help documentation -->
+					<a href="<?php echo esc_url( $this->strings['page.documentation.help.url'] ); ?>">
 						<?php echo esc_html( $this->strings['page.documentation.help.description'] ); ?>
 					</a>
 				</td>
