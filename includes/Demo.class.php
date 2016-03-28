@@ -98,7 +98,7 @@ if ( !class_exists( 'totcThemeSetupDemo' ) ) {
 		 * @since 0.1
 		 */
 		public function current_user_can() {
-			return current_user_can( 'edit_posts' );
+			return current_user_can( 'import' );
 		}
 
 		/**
