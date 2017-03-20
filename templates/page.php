@@ -78,7 +78,7 @@
 					<?php echo esc_html( $this->strings['page.documentation.help'] ); ?>
 				</th>
 				<td>
-					<a href="<?php echo esc_url( $this->strings['page.documentation.help.url'] ); ?>">
+					<a href="<?php echo esc_url( $this->strings['page.documentation.help.url'] ); ?>" target="_blank">
 						<?php echo esc_html( $this->strings['page.documentation.help.description'] ); ?>
 					</a>
 				</td>
@@ -88,7 +88,7 @@
 					<?php echo esc_html( $this->strings['page.documentation.support'] ); ?>
 				</th>
 				<td>
-					<?php printf( $this->strings['page.documentation.support.description'], '<a href="' . esc_url( $this->strings['page.documentation.support.url'] ) . '">', '</a>' ); ?>
+					<?php printf( $this->strings['page.documentation.support.description'], '<a href="' . esc_url( $this->strings['page.documentation.support.url'] ) . '" target="_blank">', '</a>' ); ?>
 				</td>
 			</tr>
 			<tr>
