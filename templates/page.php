@@ -17,10 +17,9 @@
 							<?php if ( $demo->status == 'install_plugin' ) : ?>
 								<?php if ( current_user_can( 'install_plugins' ) ) : ?>
 									<?php
-										$path = 'plugin-install.php?tab=plugin-information&plugin=' . $demo->slug . '&TB_iframe=true&width=772&height=754';
-										add_thickbox();
+										$path = 'themes.php?page=tgmpa-install-plugins';
 									?>
-									<a class="button thickbox" data-title="<?php echo esc_attr( $demo->title ); ?>" href="<?php echo is_multisite() ? esc_url( network_admin_url( $path ) ) : esc_url( admin_url( $path ) ); ?>">
+									<a class="button" data-title="<?php echo esc_attr( $demo->title ); ?>" href="<?php echo is_multisite() ? esc_url( network_admin_url( $path ) ) : esc_url( admin_url( $path ) ); ?>">
 										<?php echo esc_html( $this->strings['page.demo.install_plugin'] ); ?>
 									</a>
 
